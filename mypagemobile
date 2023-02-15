@@ -1,273 +1,401 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <title>   SpeakEasy Quiz</title>
-    
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+<!--    <link rel="stylesheet" href="mystyle.css"> -->
 
-<style> 
-     
-  body {
-    background-color: #0B3D91;
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: left;
-  }
-  h1 {
-    margin-top: 50px;
-    margin-bottom: 50px;
-  }
-  .question {
-    margin-bottom: 50px;
-    font-size: 3em;
-    font-weight: bold;
-  }
-  .w3-button {
-    background-color: #F0FFFF;
-    color: #0B3D91;
-    padding: 10px 20px;
-    border: none;
+<style>
+
+body{
+    font-size: 20px;
+    font-family: monospace;
+}
+
+#container{
+    margin : 20px auto;
+    background-color: white;
+    height: 300px;
+    width : 700px;
     border-radius: 5px;
-    margin-right: 10px;
-    box-shadow: 0px 0px 10px #888888;
-    transition: all 0.3s;
-  }
-  .w3-button:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 15px 20px #888888;
-  }
-  #score {
-    font-weight: bold;
+    box-shadow: 0px 5px 15px 0px;
+    position: relative;
+}
+#start{
     font-size: 1.5em;
-  }
-  @media (max-width: 500px) {
-    .w3-button {
-      width: 100%;
-      margin-bottom: 20px;
-    }
-  }
-  p {
-  font-size: 1.5em;
+    font-weight: bolder;
+    word-break: break-all;
+    width:100px;
+    height:150px;
+    border : 2px solid lightgrey;
+    text-align: center;
+    cursor: pointer;
+    position: absolute;
+    left:300px;
+    top:50px;
+    color : lightgrey;
+}
+#start:hover{
+    border: 3px solid lightseagreen;
+    color : lightseagreen;
+}
+
+#qImg{
+    width : 200px;
+    height : 200px;
+    position: absolute;
+    left : 0px;
+    top : 0px;
+}
+#qImg img{
+    width : 200px;
+    height : 200px;
+    border-top-left-radius: 5px;
+}
+
+#question{
+    width:500px;
+    height : 125px;
+    position: absolute;
+    right:0;
+    top:0;
+}
+#question p{
+    margin : 0;
+    padding : 15px;
+    font-size: 1.25em;
+}
+
+#choices{
+    width : 480px;
+    position: absolute;
+    right : 0;
+    top : 125px;
+    padding : 10px
+}
+.choice{
+    display: inline-block;
+    width : 135px;
+    text-align: center;
+    border : 1px solid grey;
+    border-radius: 5px;
+    cursor: pointer;
+    padding : 5px;
+}
+.choice:hover{
+    border : 2px solid grey;
+    font-weight: bold;
+}
+
+#timer{
+    position: absolute;
+    height : 100px;
+    width : 200px;
+    bottom : 0px;
+    text-align: center;
+}
+#counter{
+    font-size: 3em;
+}
+#btimeGauge{
+    width : 150px;
+    height : 10px;
+    border-radius: 10px;
+    background-color: lightgray;
+    margin-left : 25px;
+}
+#timeGauge{
+    height : 10px;
+    border-radius: 10px;
+    background-color: mediumseagreen;
+    margin-top : -10px;
+    margin-left : 25px;
+}
+#progress{
+    width : 500px;
+    position: absolute;
+    bottom : 0px;
+    right : 0px;
+    padding:5px;
+    text-align: right;
+}
+.prog{
+    width : 25px;
+    height : 25px;
+    border: 1px solid #000;
+    display: inline-block;
+    border-radius: 50%;
+    margin-left : 5px;
+    margin-right : 5px;
+}
+#scoreContainer{
+    margin : 20px auto;
+    background-color: white;
+    opacity: 0.8;
+    height: 300px;
+    width : 700px;
+    border-radius: 5px;
+    box-shadow: 0px 5px 15px 0px;
+    position: relative;
+    display: none;
+}
+#scoreContainer img{
+    position: absolute;
+    top:100px;
+    left:325px;
+}
+#scoreContainer p{
+    position: absolute;
+    display: block;
+    width : 59px;
+    height :59px;
+    top:130px;
+    left:325px;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
 }
 </style>
+</head>
+<body>
+    <div id="container">
+        <div id="start">Start Quiz!</div>
+        <div id="quiz" style="display: none">
+            <div id="question"></div>
+            <div id="qImg"></div>
+            <div id="choices">
+                <div class="choice" id="A" onclick="checkAnswer('A')"></div>
+                <div class="choice" id="B" onclick="checkAnswer('B')"></div>
+                <div class="choice" id="C" onclick="checkAnswer('C')"></div>
+            </div>
+            <div id="timer">
+                <div id="counter"></div>
+                <div id="btimeGauge"></div>
+                <div id="timeGauge"></div>
+            </div>
+            <div id="progress"></div>
+        </div>
+        <div id="scoreContainer" style="display: none"></div>
+    </div>
+ <!--   <script src="myquiz.js"></script> -->
 
+    <script>// select all elements
+const start = document.getElementById("start");
+const quiz = document.getElementById("quiz");
+const question = document.getElementById("question");
+const qImg = document.getElementById("qImg");
+const choiceA = document.getElementById("A");
+const choiceB = document.getElementById("B");
+const choiceC = document.getElementById("C");
+const counter = document.getElementById("counter");
+const timeGauge = document.getElementById("timeGauge");
+const progress = document.getElementById("progress");
+const scoreDiv = document.getElementById("scoreContainer");
 
- 
-<script>
-      let score = 0;
-      let currentQuestion = 0;
-      const questions = [  {    
-      text: "A Member of Parliament from Montreal announces that she will spend her weekend in her electoral district. This means she would be:",    options: ["In her office on Parliament Hill.", "Visiting the province of Quebec.", "In the part of Montreal where she was elected.", "Going on a vacation."],
-    answer: 2
-  },
-{
-text: "What country is Canada’s largest trading partner?",
-options: ["Mexico", "United States of America", "China", "Japan"],
-answer: 1
-},
-{
-text: "What did the Canadian Pacific Railway symbolize?",
-options: ["Easy access to the West Coast", "What can be achieved by working together", "Unity", "Ribbons of steel"],
-answer: 2
-},
-{
-text: "What did the Fathers of Confederation do?",
-options: ["They worked together to establish a new country, the Dominion of Canada", "They were explorers who formed an expedition to survey Northern Canada", "They formed a republic state in Canada", "They were a group of politicians that tried to unite Canada to the United States"],
-answer: 0
-},
-{
-text: "What do you call a law before it is passed?",
-options: ["A New law", "A Proposed law", "A Bill", "A New proposal"],
-answer: 2
-},
-{
-text: "What do you call the Sovereign’s representative in the provinces?",
-options: ["Premier", "Member of the Legislative Assembly", "Lieutenant-Governor", "Senator"],
-answer: 2
-},
-{
-text: "What do you mark on a federal election ballot?",
-options: ["The candidate's name", "The number for the candidate", "An 'X'", "The voter's name"],
-answer: 2
-},
-{
-text: "What does Confederation mean?",
-options: ["The United States Confederate soldiers came to Canada", "Joining of communities to become a province", "Joining of suburbs to form a large city", "Joining of provinces to make a new country"],
-answer: 3
-},
-{
-text: "What does it mean to say Canada is a constitutional monarchy?",
-options: ["The Sovereign (Queen or King) is the law maker of Canada", "Canada's Head of State is a hereditary Sovereign (Queen or King) who reigns in accordance with the Constitution", "The Sovereign (Queen or King) represents Canadians in Parliament", "The Sovereign (Queen or King) approves bills before becoming law"],
-answer: 1
-},
-{
-text: "What does the “right to a secret ballot” mean?",
-options: ["No one should tell you where to vote", "A secret vote used by politicians when they are voting on sensitive topics", "No one can watch your vote and no one should look at how you voted", "Your right to vote in secret on who to appoint to the Senate"],
-answer: 2
- },
- {
-    text: "After a federal election, which party forms the new government?",
-    options: ["The party with the most elected representatives is invited by the Governor General to become the party in power.", "The Queen herself picks any party to run the government.", "The Governor General proposes a law for elected officials to become the governing body.", "The Premiers of each province pick a party to run the government"],
-    answer: 0
+// create our questions
+let questions = [
+    {
+        question : "Captial of Canada?",
+        imgSrc : "/static/tenor.gif",
+        choiceA : "Vancouver",
+        choiceB : "Toronto",
+        choiceC : "Ottawa",
+        correct : "C"
+    }, {
+    question: "What is the capital of British Columbia?",
+    imgSrc : "/static/tenor.gif",
+    choiceA: "Victoria",
+    choiceB: "Vancouver",
+    choiceC: "Kelowna",
+    correct: "A"
   },
   {
-    text: "Approximately how many Canadians served in the First World War?",
-    options: ["7000.", "8 million.", "About 60,000.", "More than 600,000."],
-    answer: 3
+    question: "What is the capital of Alberta?",
+    imgSrc : "/static/tenor.gif",
+    choiceA: "Edmonton",
+    choiceB: "Calgary",
+    choiceC: "Red Deer",
+    correct: "A"
   },
   {
-    text: "Canada has three territories and how many provinces?",
-    options: ["13", "10", "3", "5"],
-    answer: 1
+    question: "What is the capital of Saskatchewan?",
+    imgSrc : "/static/tenor.gif",
+    choiceA: "Regina",
+    choiceB: "Saskatoon",
+    choiceC: "Moose Jaw",
+    correct: "A"
   },
   {
-    text: "Fatima is a new immigrant in Canada. What law allows her to take a job at par with a man?",
-    options: ["Equality of women and men", "Equality of all races.", "Equal pay for equal work.", "Equal rights."],
-    answer: 0
+    question: "What is the capital of Manitoba?",
+    imgSrc : "/static/tenor.gif",
+    choiceA: "Winnipeg",
+    choiceB: "Brandon",
+    choiceC: "Thompson",
+    correct: "A"
   },
   {
-    text: "From where does the name “Canada” come from?",
-    options: ["From the Inuit word meaning country.", "From the French word meaning joining.", "From the Métis word meaning rivers.", "From “Kanata”, the Huron-Iroquois word for village."],
-    answer: 3
+    question: "What is the capital of Ontario?",
+    imgSrc : "/static/tenor.gif",
+    choiceA: "Toronto",
+    choiceB: "Ottawa",
+    choiceC: "Hamilton",
+    correct: "B"
   },
   {
-    text: "Give an example of how you can show responsibility by participating in your community.",
-    options: ["Mind your own business.", "Have a party.", "Keep your property tidy.", "Volunteer."],
-    answer: 3
+    question: "What is the capital of Quebec?",
+    imgSrc : "/static/tenor.gif",
+    choiceA: "Quebec City",
+    choiceB: "Montreal",
+    choiceC: "Gatineau",
+    correct: "A"
   },
   {
-    text: "Give an example of where English and French have equal status in Canada.",
-    options: ["In schools.", "In the workplace.", "In the Parliament of Canada.", "At City Hall."],
-    answer: 2
+    question: "What is the capital of New Brunswick?",
+    imgSrc : "/static/tenor.gif",
+    choiceA: "Fredericton",
+    choiceB: "Moncton",
+    choiceC: "Saint John",
+    correct: "A"
   },
   {
-    text: "Give the first line of Canada’s national anthem?",
-    options: ["O Canada! Our home and native land!", "O Canada! Our province and native land!", "O Canada! From far and wide, O Canada,", "O Canada! We stand on guard for thee."],
-    answer: 0
+    question: "What is the capital of Nova Scotia?",
+    imgSrc : "/static/tenor.gif",
+    choiceA: "Halifax",
+    choiceB: "Dartmouth",
+    choiceC: "Sydney",
+    correct: "A"
   },
   {
-    text: "How are Members of Parliament chosen?",
-    options: ["Appointed by the Prime Minister.", "Elected by Canadian citizens.", "Appointed by the Queen.", "Elected by the Provincial Ministers."],
-    answer: 1
+    question: "What is the capital of Prince Edward Island?",
+    imgSrc : "/static/tenor.gif",
+    choiceA: "Charlottetown",
+    choiceB: "Summerside",
+    choiceC: "Souris",
+    correct: "A"
   },
   {
-    text: "How are Senators chosen?",
-    options: ["By the Governor General of Canada.", "By the Premiers of all provinces.", "Appointed by the Queen.", "Senators are appointed by the Governor General on the advice of the Prime Minister."],
-    answer: 3
-  },
-  {
-text: "What country is Canada’s largest trading partner?",
-options: ["Mexico", "United States of America", "China", "Japan"],
-answer: 1
-},
-{
-text: "What did the Canadian Pacific Railway symbolize?",
-options: ["Easy access to the West Coast", "What can be achieved by working together", "Unity", "Ribbons of steel"],
-answer: 2
-},
-{
-text: "What did the Fathers of Confederation do?",
-options: ["They worked together to establish a new country, the Dominion of Canada", "They were explorers who formed an expedition to survey Northern Canada", "They formed a republic state in Canada", "They were a group of politicians that tried to unite Canada to the United States"],
-answer: 0
-},
-{
-text: "What do you call a law before it is passed?",
-options: ["A New law", "A Proposed law", "A Bill", "A New proposal"],
-answer: 2
-},
-{
-text: "What do you call the Sovereign’s representative in the provinces?",
-options: ["Premier", "Member of the Legislative Assembly", "Lieutenant-Governor", "Senator"],
-answer: 2
-},
-{
-text: "What do you mark on a federal election ballot?",
-options: ["The candidate's name", "The number for the candidate", "An 'X'", "The voter's name"],
-answer: 2
-},
-{
-text: "What does Confederation mean?",
-options: ["The United States Confederate soldiers came to Canada", "Joining of communities to become a province", "Joining of suburbs to form a large city", "Joining of provinces to make a new country"],
-answer: 3
-},
-{
-text: "What does it mean to say Canada is a constitutional monarchy?",
-options: ["The Sovereign (Queen or King) is the law maker of Canada", "Canada's Head of State is a hereditary Sovereign (Queen or King) who reigns in accordance with the Constitution", "The Sovereign (Queen or King) represents Canadians in Parliament", "The Sovereign (Queen or King) approves bills before becoming law"],
-answer: 1
-},
-{
-text: "What does the “right to a secret ballot” mean?",
-options: ["No one should tell you where to vote", "A secret vote used by politicians when they are voting on sensitive topics", "No one can watch your vote and no one should look at how you voted", "Your right to vote in secret on who to appoint to the Senate"],
-answer: 2
-}
+    question: "What is the capital of Newfoundland and Labrador?",
+    imgSrc : "/static/tenor.gif",
+    choiceA: "St. John's",
+    choiceB: "Corner Brook",
+    choiceC: "Gander",
+    correct: "A"
+  }
 ];
 
+// create some variables
 
-      function checkAnswer(answer) {
-        if (questions[currentQuestion].answer === answer) {
-          score++;
-          alert("Correct!");
-        } else {
-          alert("Wrong.");
-        }
-        document.getElementById("score").innerHTML = score;
-      }
-      function displayQuestion() {
-        document.getElementById("question").innerHTML = questions[currentQuestion].text;
-        const options = questions[currentQuestion].options;
-        for (let i = 0; i < options.length; i++) {
-          const button = document.getElementById(`option${i}`);
-          button.innerHTML = options[i];
-          button.style.display = "inline-block";
-        }
-      }
-      function nextQuestion() {
-        currentQuestion++;
-        if (currentQuestion === questions.length) {
-          alert(`Quiz completed. Your score is ${score}`);
-          currentQuestion = 0;
-        }
-        displayQuestion();
-      }
-      function resetScore() {
-        score = 0;
-        currentQuestion = 0;
-        document.getElementById("score").innerHTML = score;
-        alert("Score has been reset.");
-        displayQuestion();
-      }
-</script>
-</head>
-  <body class="w3-container w3-auto">
-   <br><br>
-  <body onload="displayQuestion()">
+const lastQuestion = questions.length - 1;
+let runningQuestion = 0;
+let count = 0;
+const questionTime = 10; // 10s
+const gaugeWidth = 150; // 150px
+const gaugeUnit = gaugeWidth / questionTime;
+let TIMER;
+let score = 0;
 
- <div class="w3-mobile w3-lightblue">  
+// render a question
+function renderQuestion(){
+    let q = questions[runningQuestion];
 
-  
-  <h2>   Canada Quiz -  2023</h2>
-  <div class="w3-mobile w3-green">   
-  <p id="question"></p> 
-  </div>
- 
-<div class="w3-panel w3-card w3-grey"> 
-    <br>
-    <button id="option0" onclick="checkAnswer(0)" style="display:none;"></button>
-    <br><br>
-    <button id="option1" onclick="checkAnswer(1)" style="display:none;"></button>
-    <br><br>
-    <button id="option2" onclick="checkAnswer(2)" style="display:none;"></button> 
-    <br><br>
-    <button id="option3" onclick="checkAnswer(3)" style="display:none;"></button> 
-    <br><br>   
-</div> 
-<div class=" w3-card w3-green"> 
-    <p>Your score: <span id="score">0</span></p>
-    <button onclick="resetScore()">Reset</button>
-    <button onclick="nextQuestion()">Next</button>
-    <br><br> 
-   </div>   
-  </div>  
-  </div>  
-  </body>
+    question.innerHTML = "<p>"+ q.question +"</p>";
+    qImg.innerHTML = "<img src="+ q.imgSrc +">";
+    choiceA.innerHTML = q.choiceA;
+    choiceB.innerHTML = q.choiceB;
+    choiceC.innerHTML = q.choiceC;
+}
+
+start.addEventListener("click",startQuiz);
+
+// start quiz
+function startQuiz(){
+    start.style.display = "none";
+    renderQuestion();
+    quiz.style.display = "block";
+    renderProgress();
+    renderCounter();
+    TIMER = setInterval(renderCounter,1000); // 1000ms = 1s
+}
+
+// render progress
+function renderProgress(){
+    for(let qIndex = 0; qIndex <= lastQuestion; qIndex++){
+        progress.innerHTML += "<div class='prog' id="+ qIndex +"></div>";
+    }
+}
+
+// counter render
+
+function renderCounter(){
+    if(count <= questionTime){
+        counter.innerHTML = count;
+        timeGauge.style.width = count * gaugeUnit + "px";
+        count++
+    }else{
+        count = 0;
+        // change progress color to red
+        answerIsWrong();
+        if(runningQuestion < lastQuestion){
+            runningQuestion++;
+            renderQuestion();
+        }else{
+            // end the quiz and show the score
+            clearInterval(TIMER);
+            scoreRender();
+        }
+    }
+}
+
+// checkAnwer
+
+function checkAnswer(answer){
+    if( answer == questions[runningQuestion].correct){
+        // answer is correct
+        score++;
+        // change progress color to green
+        answerIsCorrect();
+    }else{
+        // answer is wrong
+        // change progress color to red
+        answerIsWrong();
+    }
+    count = 0;
+    if(runningQuestion < lastQuestion){
+        runningQuestion++;
+        renderQuestion();
+    }else{
+        // end the quiz and show the score
+        clearInterval(TIMER);
+        scoreRender();
+    }
+}
+
+// answer is correct
+function answerIsCorrect(){
+    document.getElementById(runningQuestion).style.backgroundColor = "#0f0";
+}
+
+// answer is Wrong
+function answerIsWrong(){
+    document.getElementById(runningQuestion).style.backgroundColor = "#f00";
+}
+
+// score render
+function scoreRender(){
+    scoreDiv.style.display = "block";
+
+    // calculate the amount of question percent answered by the user
+    const scorePerCent = Math.round(100 * score/questions.length);
+
+    // choose the image based on the scorePerCent
+    let img = (scorePerCent >= 80) ? "/stacic/5.png" :
+              (scorePerCent >= 60) ? "/static/4.png" :
+              (scorePerCent >= 40) ? "/static/3.png" :
+              (scorePerCent >= 20) ? "/static/2.png" :
+              "/static/1.png";
+
+
+    scoreDiv.innerHTML += "<p>"+ scorePerCent +"%</p>";
+}</script>
+</body>
 </html>
