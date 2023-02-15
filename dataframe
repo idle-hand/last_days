@@ -1,0 +1,82 @@
+let questions = [
+  {
+    question: "What is the capital of British Columbia?",
+    imgSrc: "/static/bc.jpg",
+    choiceA: "Victoria",
+    choiceB: "Vancouver",
+    choiceC: "Kelowna",
+    correct: "A"
+  },
+  {
+    question: "What is the capital of Alberta?",
+    imgSrc: "/static/ab.jpg",
+    choiceA: "Edmonton",
+    choiceB: "Calgary",
+    choiceC: "Red Deer",
+    correct: "A"
+  },
+  {
+    question: "What is the capital of Saskatchewan?",
+    imgSrc: "/static/sk.jpg",
+    choiceA: "Regina",
+    choiceB: "Saskatoon",
+    choiceC: "Moose Jaw",
+    correct: "A"
+  },
+  {
+    question: "What is the capital of Manitoba?",
+    imgSrc: "/static/mb.jpg",
+    choiceA: "Winnipeg",
+    choiceB: "Brandon",
+    choiceC: "Thompson",
+    correct: "A"
+  },
+  {
+    question: "What is the capital of Ontario?",
+    imgSrc: "/static/on.jpg",
+    choiceA: "Toronto",
+    choiceB: "Ottawa",
+    choiceC: "Hamilton",
+    correct: "B"
+  },
+  {
+    question: "What is the capital of Quebec?",
+    imgSrc: "/static/qc.jpg",
+    choiceA: "Quebec City",
+    choiceB: "Montreal",
+    choiceC: "Gatineau",
+    correct: "A"
+  },
+  {
+    question: "What is the capital of New Brunswick?",
+    imgSrc: "/static/nb.jpg",
+    choiceA: "Fredericton",
+    choiceB: "Moncton",
+    choiceC: "Saint John",
+    correct: "A"
+  },
+  {
+    question: "What is the capital of Nova Scotia?",
+    imgSrc: "/static/ns.jpg",
+    choiceA: "Halifax",
+    choiceB: "Dartmouth",
+    choiceC: "Sydney",
+    correct: "A"
+  },
+  {
+    question: "What is the capital of Prince Edward Island?",
+    imgSrc: "/static/pe.jpg",
+    choiceA: "Charlottetown",
+    choiceB: "Summerside",
+    choiceC: "Souris",
+    correct: "A"
+  },
+  {
+    question: "What is the capital of Newfoundland and Labrador?",
+    imgSrc: "/static/nl.jpg",
+    choiceA: "St. John's",
+    choiceB: "Corner Brook",
+    choiceC: "Gander",
+    correct: "A"
+  }
+];
